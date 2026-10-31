@@ -125,6 +125,24 @@
             opacity: 1;
             pointer-events: auto;
         }
+        .modal-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-panel {
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+            transition: all 0.25s ease;
+        }
+        .modal-overlay.open .modal-panel {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
     </style>
 </head>
 <body class="bg-gold-50 text-gray-800 antialiased">
@@ -429,7 +447,10 @@
                         <li class="flex items-center"><svg class="w-5 h-5 text-gold-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 3"></path></svg>Produit de démonstration</li>
                         <li class="flex items-center"><svg class="w-5 h-5 text-gold-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 3"></path></svg>Découverte de la solution</li>
                     </ul>
-                    <a href="https://wa.me/221764597575?text=Plan+Découverte+gratuit" target="_blank" class="block w-full py-3 border-2 border-gold-600 text-gold-600 font-bold rounded-full text-center hover:bg-gold-50 transition">Commencer</a>
+                    <button id="open-free-signup-modal" type="button" class="w-full py-3 border-2 border-gold-600 text-gold-600 font-bold rounded-full text-center hover:bg-gold-50 transition flex items-center justify-center gap-2">
+                        <span>🚀</span>
+                        <span>Créer ma boutique gratuite</span>
+                    </button>
                 </div>
 
                 <div class="bg-white border border-gold-200 rounded-2xl p-6 card-hover fade-in">
@@ -552,6 +573,72 @@
         </div>
     </footer>
 
+    <div id="freeSignupModal" class="modal-overlay fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="modal-panel bg-[#1A1A1A] border border-gold-500/60 rounded-2xl w-full max-w-xl shadow-2xl overflow-hidden">
+            <div class="relative p-6 sm:p-8">
+                <button type="button" id="close-free-signup-modal" class="absolute top-4 right-4 text-gold-400 hover:text-gold-300" aria-label="Fermer le formulaire">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+
+                <div class="mb-6">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold text-gold-400">🚀 Créer ma boutique gratuite</h3>
+                    <p class="mt-2 text-sm text-gray-300">Remplissez ce formulaire et nous créerons votre boutique en 24h</p>
+                </div>
+
+                <form id="free-signup-form" novalidate class="space-y-4">
+                    <div>
+                        <label for="signup-name" class="block mb-2 text-sm font-semibold text-gold-400">Nom complet</label>
+                        <input id="signup-name" type="text" placeholder="Votre nom" class="w-full rounded-xl border border-gold-500/40 bg-[#2D2D2D] text-white placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50" required>
+                        <p class="error-message hidden mt-2 text-sm text-red-500">Veuillez remplir ce champ</p>
+                    </div>
+
+                    <div>
+                        <label for="signup-whatsapp" class="block mb-2 text-sm font-semibold text-gold-400">Numéro WhatsApp</label>
+                        <input id="signup-whatsapp" type="tel" placeholder="+221 77 123 45 67" class="w-full rounded-xl border border-gold-500/40 bg-[#2D2D2D] text-white placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50" required>
+                        <p class="error-message hidden mt-2 text-sm text-red-500">Veuillez remplir ce champ</p>
+                    </div>
+
+                    <div>
+                        <label for="signup-type" class="block mb-2 text-sm font-semibold text-gold-400">Type de boutique</label>
+                        <select id="signup-type" class="w-full rounded-xl border border-gold-500/40 bg-[#2D2D2D] text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50" required>
+                            <option value="" selected disabled>Choisir une option</option>
+                            <option value="Produits physiques">Produits physiques</option>
+                            <option value="Produits numériques">Produits numériques</option>
+                            <option value="Services">Services</option>
+                            <option value="Mixte">Mixte</option>
+                        </select>
+                        <p class="error-message hidden mt-2 text-sm text-red-500">Veuillez remplir ce champ</p>
+                    </div>
+
+                    <div>
+                        <label for="signup-store-name" class="block mb-2 text-sm font-semibold text-gold-400">Nom de la boutique souhaité</label>
+                        <input id="signup-store-name" type="text" placeholder="Nom de votre boutique" class="w-full rounded-xl border border-gold-500/40 bg-[#2D2D2D] text-white placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50">
+                    </div>
+
+                    <div>
+                        <label for="signup-city" class="block mb-2 text-sm font-semibold text-gold-400">Ville</label>
+                        <input id="signup-city" type="text" placeholder="Dakar, Pikine..." class="w-full rounded-xl border border-gold-500/40 bg-[#2D2D2D] text-white placeholder:text-gray-400 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gold-500/50" required>
+                        <p class="error-message hidden mt-2 text-sm text-red-500">Veuillez remplir ce champ</p>
+                    </div>
+
+                    <button type="submit" class="w-full gradient-gold text-white px-8 py-4 rounded-full font-bold text-lg hover:opacity-90 transition shadow-xl shimmer inline-flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.76-1.657-2.072-.177-.312-.036-.458.13-.605.143-.143.297-.347.447-.52.15-.173.199-.298.298-.497.099-.199.05-.373-.025-.52-.075-.148-.67-1.611-.916-2.204-.24-.58-.485-.5-.67-.51l-.57-.01c-.197 0-.52.074-.79.373-.27.3-1.03 1.005-1.03 2.447 0 1.442 1.055 2.84 1.2 3.038.145.198 2.07 3.162 5.02 4.438.701.303 1.248.485 1.676.62.704.224 1.344.193 1.85.118.564-.084 1.758-.72 2.006-1.416.248-.696.248-1.294.173-1.416-.074-.123-.27-.198-.568-.347z"></path></svg>
+                        Créer ma boutique
+                    </button>
+                </form>
+
+                <p class="mt-5 text-center text-sm text-gray-300">
+                    Ou inscrivez-vous directement sur Ayweu →
+                    <a href="https://ayweu.com/r/AYY78J3" target="_blank" rel="noopener noreferrer" class="text-gold-400 underline hover:text-gold-300">Ayweu</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup-success-toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-600 text-white px-5 py-3 rounded-full shadow-lg hidden z-[60]">
+        ✅ Merci ! Nous vous contacterons sous 24h pour créer votre boutique.
+    </div>
+
     <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
     <script>
         function toggleMobileMenu() {
@@ -563,8 +650,28 @@
             document.body.style.overflow = isOpen ? '' : 'hidden';
         }
 
+        function openFreeSignupModal() {
+            const modal = document.getElementById('freeSignupModal');
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFreeSignupModal() {
+            const modal = document.getElementById('freeSignupModal');
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function showSuccessToast() {
+            const toast = document.getElementById('signup-success-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
         function showFieldError(field, message) {
-            const wrapper = field.closest('.form-field');
+            const wrapper = field.closest('div');
             const error = wrapper ? wrapper.querySelector('.error-message') : null;
             if (!wrapper || !error) return;
             error.textContent = message;
@@ -574,7 +681,7 @@
         }
 
         function clearFieldError(field) {
-            const wrapper = field.closest('.form-field');
+            const wrapper = field.closest('div');
             const error = wrapper ? wrapper.querySelector('.error-message') : null;
             if (!wrapper || !error) return;
             error.classList.add('hidden');
@@ -582,21 +689,24 @@
             field.classList.remove('border-red-500');
         }
 
-        document.getElementById('whatsapp-contact-form').addEventListener('submit', function (event) {
+        document.getElementById('open-free-signup-modal').addEventListener('click', openFreeSignupModal);
+        document.getElementById('close-free-signup-modal').addEventListener('click', closeFreeSignupModal);
+        document.getElementById('freeSignupModal').addEventListener('click', function (event) {
+            if (event.target === this) closeFreeSignupModal();
+        });
+
+        document.getElementById('free-signup-form').addEventListener('submit', function (event) {
             event.preventDefault();
 
-            const form = event.currentTarget;
-            const fullName = form.querySelector('#fullName');
-            const whatsappNumber = form.querySelector('#whatsappNumber');
-            const city = form.querySelector('#city');
-            const needType = form.querySelector('#needType');
-            const planChoice = form.querySelector('#planChoice');
-            const message = form.querySelector('#message');
+            const fullName = document.getElementById('signup-name');
+            const whatsappNumber = document.getElementById('signup-whatsapp');
+            const shopType = document.getElementById('signup-type');
+            const city = document.getElementById('signup-city');
+            const storeName = document.getElementById('signup-store-name');
 
-            const fields = [fullName, whatsappNumber, city, needType, planChoice];
             let isValid = true;
 
-            fields.forEach(field => {
+            [fullName, whatsappNumber, city, shopType].forEach(field => {
                 clearFieldError(field);
                 if (!field.value || !field.value.trim()) {
                     showFieldError(field, 'Veuillez remplir ce champ');
@@ -605,28 +715,18 @@
             });
 
             if (whatsappNumber.value && !/^(\+|00)/.test(whatsappNumber.value.trim())) {
-                showFieldError(whatsappNumber, 'Le numéro WhatsApp doit commencer par + ou 00');
+                showFieldError(whatsappNumber, 'Veuillez remplir ce champ');
                 isValid = false;
             }
 
-            if (!isValid) {
-                return;
-            }
+            if (!isValid) return;
 
-            const finalMessage = `Bonjour Trésors en Ligne ! 👑
+            const message = `Bonjour Trésors en Ligne ! 👑\n\nJe veux créer ma boutique GRATUITE (plan Découverte)\n\nNom : ${fullName.value.trim()}\nWhatsApp : ${whatsappNumber.value.trim()}\nVille : ${city.value.trim()}\nType de boutique : ${shopType.value}\nNom de boutique souhaité : ${storeName.value.trim() || 'Non précisé'}\n\nMerci de m'accompagner dans la création !`;
 
-Je suis ${fullName.value.trim()}
-Mon WhatsApp : ${whatsappNumber.value.trim()}
-Ville : ${city.value.trim()}
-
-Je suis intéressé par :
-- Type : ${needType.value}
-- Plan : ${planChoice.value}
-
-${message.value.trim() ? `${message.value.trim()}\n\n` : ''}Pouvez-vous me donner plus d'informations ?`;
-
-            const whatsappUrl = `https://wa.me/221764597575?text=${encodeURIComponent(finalMessage)}`;
+            const whatsappUrl = `https://wa.me/221764597575?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank');
+            closeFreeSignupModal();
+            showSuccessToast();
         });
 
         const observerOptions = {
